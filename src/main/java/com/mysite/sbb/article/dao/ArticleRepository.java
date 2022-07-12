@@ -14,4 +14,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     boolean existsByTitleAndBody(String title, String body);
 
     List<Article> findByTitleAndBody(String title, String body);
+
+    boolean saveByTitle(String title);
 }
