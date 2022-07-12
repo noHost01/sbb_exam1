@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,11 +39,15 @@ public class ArticleController {
 
     @RequestMapping("/doModify")
     @ResponseBody
-    public Article showArticleDoModify(long id, String title) {
+    public Article showArticleDoModify(long id, String title, String body) {
         Article article = articleRepository.findById(id).get();
         if(title != null) {
             article.setTitle(title);
         }
+        if(body != null) {
+            article.setBody(body);
+        }
+        article.setUpdateDate(LocalDateTime.now());
         articleRepository.save(article);
         return article;
     }
@@ -55,5 +60,12 @@ public class ArticleController {
         }
         articleRepository.deleteById(id);
         return "%d번 게시물이 삭제되었습니다".formatted(id);
+    }
+
+    @RequestMapping("/findByTitle")
+    @ResponseBody
+    public List<Article> showArticleFindByTitle(String title) {
+        List<Article> articles = articleRepository.findByTitle(title);
+        return articles;
     }
 }
